@@ -1,0 +1,94 @@
+backend:
+  name: github
+  repo: gerardkossivi228-ship-it/2streets
+  branch: main
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+locale: "fr"
+
+collections:
+
+  - name: "fashion"
+    label: "2 STREET FASHION"
+    label_singular: "Vêtement"
+
+    folder: "content/products/fashion"
+    create: true
+    slug: "{{slug}}"
+
+    fields:
+
+      - label: "Nom du vêtement"
+        name: "title"
+        widget: "string"
+
+      - label: "Prix (FCFA)"
+        name: "price"
+        widget: "number"
+        value_type: "int"
+        min: 0
+
+      - label: "Photo du vêtement"
+        name: "image"
+        widget: "image"
+        choose_url: false
+        allow_multiple: false
+
+      - label: "Description"
+        name: "description"
+        widget: "text"
+        required: false
+
+      - label: "Catégorie"
+        name: "category"
+        widget: "select"
+        options:
+          - "T-Shirt"
+          - "Hoodie"
+          - "Pantalon"
+          - "Cargo"
+          - "Veste"
+          - "Short"
+          - "Casquette"
+          - "Accessoire"
+          - "Autre"
+
+      - label: "Tailles disponibles"
+        name: "sizes"
+        widget: "select"
+        multiple: true
+        options:
+          - "S"
+          - "M"
+          - "L"
+          - "XL"
+          - "XXL"
+        required: false
+
+      - label: "Couleurs disponibles"
+        name: "colors"
+        widget: "list"
+        required: false
+        field:
+          label: "Couleur"
+          name: "color"
+          widget: "string"
+
+      - label: "Stock disponible"
+        name: "stock"
+        widget: "number"
+        value_type: "int"
+        min: 0
+        default: 0
+
+      - label: "Produit vedette"
+        name: "featured"
+        widget: "boolean"
+        default: false
+
+      - label: "Boutique"
+        name: "branch"
+        widget: "hidden"
+        default: "fashion"
