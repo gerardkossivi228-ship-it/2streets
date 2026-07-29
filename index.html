@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0A0A0A" />
+  <meta name="description" content="2 STREET — Luxe. Style. Performance. Fashion, montres, réparation et Apple au Togo." />
+  <title>2 STREET — Luxe. Style. Performance.</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            street: {
+              black: '#0A0A0A',
+              gold: '#D4AF37',
+              softgold: '#E7C65B',
+              cream: '#F5F1E7'
+            }
+          },
+          fontFamily: {
+            display: ['Playfair Display', 'serif'],
+            sans: ['Inter', 'sans-serif']
+          },
+          boxShadow: {
+            gold: '0 0 35px rgba(212,175,55,.13)',
+            goldStrong: '0 0 50px rgba(212,175,55,.22)'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --gold:#D4AF37; --black:#0A0A0A; }
+    html { scroll-behavior:smooth; }
+    body { background:#0A0A0A; color:#fff; font-family:Inter, sans-serif; }
+    ::selection { background:#D4AF37; color:#0A0A0A; }
+    .gold-text {
+      background:linear-gradient(110deg,#9f7a19,#D4AF37,#f6df78,#D4AF37,#9f7a19);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .gold-border { border-color:rgba(212,175,55,.34); }
+    .glass { background:rgba(10,10,10,.78); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
+    .luxury-grid {
+      background-image:linear-gradient(rgba(212,175,55,.045) 1px,transparent 1px),
+                       linear-gradient(90deg,rgba(212,175,55,.045) 1px,transparent 1px);
+      background-size:50px 50px;
+    }
+    .hero-overlay { background:linear-gradient(90deg,rgba(0,0,0,.94) 0%,rgba(0,0,0,.70) 42%,rgba(0,0,0,.25) 100%); }
+    .card-img { transition:transform .55s cubic-bezier(.2,.7,.2,1); }
+    .product-card:hover .card-img { transform:scale(1.055); }
+    .product-card { transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease; }
+    .product-card:hover { transform:translateY(-4px); border-color:rgba(212,175,55,.55); box-shadow:0 15px 50px rgba(0,0,0,.45); }
+    .nav-link { position:relative; }
+    .nav-link:after { content:'';position:absolute;left:0;bottom:-7px;width:0;height:1px;background:#D4AF37;transition:width .25s; }
+    .nav-link:hover:after,.nav-link.active:after { width:100%; }
+    .modal { opacity:0;pointer-events:none;transition:opacity .25s ease; }
+    .modal.open { opacity:1;pointer-events:auto; }
+    .drawer { transform:translateX(100%);transition:transform .3s ease; }
+    .drawer.open { transform:translateX(0); }
+    .toast { transform:translateY(20px);opacity:0;pointer-events:none;transition:.3s; }
+    .toast.show { transform:translateY(0);opacity:1; }
+    .hide-scroll::-webkit-scrollbar { display:none; }
+    .hide-scroll { scrollbar-width:none; }
+    input,select,textarea { outline:none; }
+    input:focus,select:focus,textarea:focus { border-color:#D4AF37 !important; box-shadow:0 0 0 2px rgba(212,175,55,.12); }
+    .no-results { display:none; }
+  </style>
+</head>
+
+<body class="overflow-x-hidden">
+  <!-- ANNOUNCEMENT -->
+  <div class="bg-street-gold text-street-black text-[11px] sm:text-xs font-bold tracking-[.18em] text-center py-2 px-4">
+    LIVRAISON PARTOUT AU TOGO • PAIEMENT À LA LIVRAISON • WHATSAPP +228 91 55 45 71
+  </div>
+
+  <!-- HEADER -->
+  <header id="header" class="fixed top-7 sm:top-8 left-0 right-0 z-50 px-3 sm:px-5">
+    <div class="max-w-7xl mx-auto glass border gold-border rounded-2xl shadow-gold">
+      <div class="h-[68px] px-4 sm:px-6 flex items-center justify-between">
+        <button onclick="goHome()" class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 rounded-full border border-street-gold/60 flex items-center justify-center text-street-gold font-display text-xl relative">
+            <span>2</span><span class="absolute -top-2 text-[10px]">♛</span>
+          </div>
+          <div class="text-left">
+            <div class="font-display text-lg sm:text-xl tracking-[.18em] leading-none gold-text">2 STREET</div>
+            <div class="text-[7px] tracking-[.24em] text-white/55 mt-1">LUXE. STYLE. PERFORMANCE.</div>
+          </div>
+        </button>
+
+        <nav class="hidden lg:flex items-center gap-8 text-[11px] font-semibold tracking-[.13em]">
+          <a class="nav-link active" href="#accueil">ACCUEIL</a>
+          <a class="nav-link" href="#boutiques">BOUTIQUES</a>
+          <a class="nav-link" href="#apropos">À PROPOS</a>
+          <a class="nav-link" href="#livraison">LIVRAISON</a>
+          <a class="nav-link" href="#contact">CONTACT</a>
+        </nav>
+
+        <div class="flex items-center gap-1 sm:gap-2">
+          <button onclick="openSearch()" aria-label="Recherche" class="icon-btn p-2.5 hover:text-street-gold transition">⌕</button>
+          <button onclick="openAccount()" aria-label="Compte" class="p-2.5 hover:text-street-gold transition">♙</button>
+          <button onclick="openCart()" aria-label="Panier" class="p-2.5 hover:text-street-gold transition relative">
+            🛒
+            <span id="cartCount" class="absolute top-0 right-0 min-w-4 h-4 px-1 rounded-full bg-street-gold text-street-black text-[9px] font-bold flex items-center justify-center">0</span>
+          </button>
+          <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 text-xl">☰</button>
+        </div>
+      </div>
+      <div id="mobileMenu" class="hidden lg:hidden border-t border-white/10 px-5 py-4">
+        <div class="grid grid-cols-2 gap-3 text-xs tracking-[.14em]">
+          <a onclick="toggleMobileMenu()" href="#accueil" class="py-2">ACCUEIL</a>
+          <a onclick="toggleMobileMenu()" href="#boutiques" class="py-2">BOUTIQUES</a>
+          <a onclick="toggleMobileMenu()" href="#apropos" class="py-2">À PROPOS</a>
+          <a onclick="toggleMobileMenu()" href="#livraison" class="py-2">LIVRAISON</a>
+          <a onclick="toggleMobileMenu()" href="#contact" class="py-2">CONTACT</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section id="accueil" class="relative min-h-[720px] sm:min-h-[790px] flex items-center overflow-hidden">
+      <div class="absolute inset-0 bg-cover bg-center"
+        style="background-image:url('https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=2200&q=88');"></div>
+      <div class="absolute inset-0 hero-overlay"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-street-black via-transparent to-street-black/20"></div>
+
+      <div class="relative max-w-7xl mx-auto w-full px-5 sm:px-8 pt-32 sm:pt-40 pb-24">
+        <div class="max-w-2xl">
+          <div class="flex items-center gap-3 mb-5">
+            <span class="w-10 h-px bg-street-gold"></span>
+            <span class="text-street-gold text-xs font-bold tracking-[.35em]">MAISON 2 STREET</span>
+          </div>
+          <h1 class="font-display text-6xl sm:text-8xl leading-[.85] tracking-tight">
+            <span class="gold-text">2 STREET</span>
+          </h1>
+          <p class="mt-5 text-xl sm:text-2xl tracking-[.32em] font-semibold">LUXE. STYLE. PERFORMANCE.</p>
+          <p class="mt-6 max-w-xl text-white/70 leading-7 text-sm sm:text-base">
+            Découvrez nos collections exclusives de vêtements, montres et téléphones.
+            Qualité premium, pour un style de vie unique.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3 mt-8">
+            <a href="#boutiques" class="inline-flex justify-center items-center bg-street-gold text-street-black font-extrabold tracking-[.13em] text-xs px-7 py-4 rounded-md hover:bg-street-softgold transition shadow-gold">
+              DÉCOUVRIR LES COLLECTIONS
+            </a>
+            <button onclick="openWhatsApp('Bonjour 2 STREET, je souhaite découvrir vos collections.')" class="inline-flex justify-center items-center border border-white/30 bg-black/20 backdrop-blur text-white font-bold tracking-[.13em] text-xs px-7 py-4 rounded-md hover:border-street-gold hover:text-street-gold transition">
+              WHATSAPP
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRUST BADGES -->
+    <section class="relative -mt-12 z-10 px-4">
+      <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-px bg-street-gold/20 border border-street-gold/20 rounded-xl overflow-hidden">
+        <div class="bg-[#111] p-6 flex gap-4 items-center">
+          <div class="w-12 h-12 rounded-full border border-street-gold/50 flex items-center justify-center text-xl text-street-gold">✦</div>
+          <div><p class="font-bold text-xs tracking-wider">QUALITÉ PREMIUM</p><p class="text-xs text-white/45 mt-1">Produits sélectionnés</p></div>
+        </div>
+        <div class="bg-[#111] p-6 flex gap-4 items-center">
+          <div class="w-12 h-12 rounded-full border border-street-gold/50 flex items-center justify-center text-xl text-street-gold">♧</div>
+          <div><p class="font-bold text-xs tracking-wider">LIVRAISON RAPIDE</p><p class="text-xs text-white/45 mt-1">Partout au Togo</p></div>
+        </div>
+        <div class="bg-[#111] p-6 flex gap-4 items-center">
+          <div class="w-12 h-12 rounded-full border border-street-gold/50 flex items-center justify-center text-xl text-street-gold">▣</div>
+          <div><p class="font-bold text-xs tracking-wider">PAIEMENT SÉCURISÉ</p><p class="text-xs text-white/45 mt-1">Paiement à la livraison</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOUTIQUES -->
+    <section id="boutiques" class="py-24 px-5 luxury-grid">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+          <p class="text-street-gold text-xs font-bold tracking-[.35em] mb-3">EXPLOREZ NOS UNIVERS</p>
+          <h2 class="font-display text-4xl sm:text-5xl">NOS <span class="gold-text">BOUTIQUES</span></h2>
+          <div class="w-16 h-px bg-street-gold mx-auto mt-5"></div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-5">
+          <button onclick="showShop('fashion')" class="group relative text-left min-h-[420px] overflow-hidden rounded-2xl border gold-border bg-black">
+            <img class="absolute inset-0 w-full h-full object-cover opacity-75 group-hover:scale-105 transition duration-700"
+              src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=1200&q=85" alt="2 Street Fashion" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 p-7">
+              <p class="text-street-gold text-xs tracking-[.28em] font-bold">01 — FASHION</p>
+              <h3 class="font-display text-3xl mt-2">2 STREET FASHION</h3>
+              <p class="text-white/60 text-xs mt-2">Vêtements & accessoires</p>
+              <span class="inline-flex mt-5 px-5 py-3 border border-street-gold text-street-gold text-[10px] font-bold tracking-[.2em] group-hover:bg-street-gold group-hover:text-black transition">DÉCOUVRIR →</span>
+            </div>
+          </button>
+
+          <button onclick="showShop('watch')" class="group relative text-left min-h-[420px] overflow-hidden rounded-2xl border gold-border bg-black">
+            <img class="absolute inset-0 w-full h-full object-cover opacity-75 group-hover:scale-105 transition duration-700"
+              src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=85" alt="2 Street Watch" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 p-7">
+              <p class="text-street-gold text-xs tracking-[.28em] font-bold">02 — WATCH</p>
+              <h3 class="font-display text-3xl mt-2">2 STREET WATCH</h3>
+              <p class="text-white/60 text-xs mt-2">Montres & réparation</p>
+              <span class="inline-flex mt-5 px-5 py-3 border border-street-gold text-street-gold text-[10px] font-bold tracking-[.2em] group-hover:bg-street-gold group-hover:text-black transition">DÉCOUVRIR →</span>
+            </div>
+          </button>
+
+          <button onclick="showShop('apple')" class="group relative text-left min-h-[420px] overflow-hidden rounded-2xl border gold-border bg-black">
+            <img class="absolute inset-0 w-full h-full object-cover opacity-75 group-hover:scale-105 transition duration-700"
+              src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?auto=format&fit=crop&w=1200&q=85" alt="2 Street Apple" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 p-7">
+              <p class="text-street-gold text-xs tracking-[.28em] font-bold">03 — APPLE</p>
+              <h3 class="font-display text-3xl mt-2">2 STREET APPLE</h3>
+              <p class="text-white/60 text-xs mt-2">iPhone & accessoires</p>
+              <span class="inline-flex mt-5 px-5 py-3 border border-street-gold text-street-gold text-[10px] font-bold tracking-[.2em] group-hover:bg-street-gold group-hover:text-black transition">DÉCOUVRIR →</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SHOP -->
+    <section id="shop" class="hidden py-20 px-4 sm:px-6 bg-[#0b0b0b]">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
+          <div>
+            <button onclick="goHome()" class="text-xs text-white/40 hover:text-street-gold mb-5">← Retour à l'accueil</button>
+            <p id="shopKicker" class="text-street-gold text-xs font-bold tracking-[.3em]">BOUTIQUE</p>
+            <h2 id="shopTitle" class="font-display text-4xl sm:text-5xl mt-2">2 STREET FASHION</h2>
+            <p id="shopDescription" class="text-white/50 text-sm mt-3 max-w-2xl"></p>
+          </div>
+          <div class="text-xs text-white/40"><span id="productResultCount">0</span> produits</div>
+        </div>
+
+        <div class="grid lg:grid-cols-[250px_1fr] gap-7">
+          <!-- FILTERS -->
+          <aside class="h-fit lg:sticky lg:top-28 border border-white/10 bg-[#101010] rounded-xl p-5">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-xs tracking-[.18em]">FILTRES</h3>
+              <button onclick="resetFilters()" class="text-[10px] text-street-gold">RÉINITIALISER</button>
+            </div>
+            <div class="mt-6 space-y-6">
+              <div>
+                <label class="block text-[10px] text-white/45 uppercase tracking-widest mb-2">Catégorie</label>
+                <select id="categoryFilter" onchange="applyFilters()" class="w-full bg-black border border-white/10 rounded-lg px-3 py-3 text-xs">
+                  <option value="all">Toutes</option>
+                  <option value="T-shirts">T-shirts</option>
+                  <option value="Hoodies">Hoodies</option>
+                  <option value="Pantalons">Pantalons</option>
+                  <option value="Vestes">Vestes</option>
+                  <option value="Accessoires">Accessoires</option>
+                  <option value="Montres">Montres</option>
+                  <option value="Apple">Apple</option>
+                </select>
+              </div>
+              <div id="sizeFilterWrap">
+                <label class="block text-[10px] text-white/45 uppercase tracking-widest mb-2">Taille</label>
+                <div class="grid grid-cols-5 gap-1.5">
+                  <button data-size="S" class="size-filter">S</button><button data-size="M" class="size-filter">M</button><button data-size="L" class="size-filter">L</button><button data-size="XL" class="size-filter">XL</button><button data-size="XXL" class="size-filter">XXL</button>
+                </div>
+              </div>
+              <div>
+                <label class="block text-[10px] text-white/45 uppercase tracking-widest mb-2">Couleur</label>
+                <div class="flex flex-wrap gap-2">
+                  <button data-color="Noir" class="color-filter w-7 h-7 rounded-full bg-black border border-white/30" title="Noir"></button>
+                  <button data-color="Blanc" class="color-filter w-7 h-7 rounded-full bg-white border border-white/30" title="Blanc"></button>
+                  <button data-color="Gris" class="color-filter w-7 h-7 rounded-full bg-gray-500 border border-white/30" title="Gris"></button>
+                  <button data-color="Beige" class="color-filter w-7 h-7 rounded-full bg-[#d9c5a0] border border-white/30" title="Beige"></button>
+                  <button data-color="Doré" class="color-filter w-7 h-7 rounded-full bg-street-gold border border-white/30" title="Doré"></button>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-[10px] text-white/45 mb-2"><span>PRIX MAXIMUM</span><span id="priceValue">1.500.000 FCFA</span></div>
+                <input id="priceFilter" type="range" min="10000" max="1500000" step="5000" value="1500000" oninput="document.getElementById('priceValue').textContent=money(this.value);applyFilters()" class="w-full accent-[#D4AF37]">
+              </div>
+            </div>
+          </aside>
+
+          <!-- PRODUCTS -->
+          <div>
+            <div class="flex justify-end mb-4">
+              <select id="sortFilter" onchange="applyFilters()" class="bg-[#111] border border-white/10 rounded-lg px-3 py-2 text-xs">
+                <option value="featured">Trier par : Populaire</option>
+                <option value="priceAsc">Prix croissant</option>
+                <option value="priceDesc">Prix décroissant</option>
+                <option value="name">Nom A-Z</option>
+              </select>
+            </div>
+            <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5"></div>
+            <div id="noResults" class="no-results text-center border border-dashed border-white/10 rounded-xl py-20">
+              <div class="text-3xl mb-3">⌕</div>
+              <p class="font-bold">Aucun produit trouvé</p>
+              <p class="text-white/40 text-xs mt-2">Modifiez vos filtres.</p>
+            </div>
+
+            <!-- WATCH REPAIR -->
+            <div id="repairSection" class="hidden mt-12 relative overflow-hidden rounded-2xl border gold-border min-h-[300px]">
+              <img src="https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?auto=format&fit=crop&w=1500&q=85" class="absolute inset-0 w-full h-full object-cover opacity-35" alt="Réparation de montres" loading="lazy">
+              <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/30"></div>
+              <div class="relative p-7 sm:p-10 max-w-xl">
+                <p class="text-street-gold text-xs tracking-[.3em] font-bold">SERVICE HORLOGER</p>
+                <h3 class="font-display text-3xl sm:text-4xl mt-2">RÉPARATION DE MONTRES</h3>
+                <ul class="mt-5 text-xs text-white/65 space-y-2">
+                  <li>✓ Changement de pile</li><li>✓ Révision complète</li><li>✓ Changement de bracelet</li><li>✓ Réparation de mécanisme</li>
+                </ul>
+                <button onclick="openWhatsApp('Bonjour 2 STREET, je souhaite demander un devis pour une réparation de montre.')" class="mt-7 bg-street-gold text-black px-6 py-3 rounded-md text-xs font-extrabold tracking-widest">DEMANDER UN DEVIS</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="apropos" class="py-24 px-5 border-t border-white/5">
+      <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <p class="text-street-gold text-xs font-bold tracking-[.35em]">L'ADN 2 STREET</p>
+          <h2 class="font-display text-4xl sm:text-5xl mt-3">LUXE. <span class="gold-text">STYLE.</span> PERFORMANCE.</h2>
+          <p class="text-white/55 leading-7 text-sm mt-6">
+            2 STREET réunit trois univers dans une même maison : la mode streetwear premium,
+            l'horlogerie et l'univers Apple. Notre objectif : proposer des produits soigneusement
+            sélectionnés, un service fiable et une expérience d'achat simple au Togo.
+          </p>
+          <div class="grid grid-cols-3 gap-3 mt-8">
+            <div class="border border-white/10 rounded-xl p-4"><b class="text-street-gold text-xl">03</b><p class="text-[10px] text-white/45 mt-1">UNIVERS</p></div>
+            <div class="border border-white/10 rounded-xl p-4"><b class="text-street-gold text-xl">7J</b><p class="text-[10px] text-white/45 mt-1">RETOUR</p></div>
+            <div class="border border-white/10 rounded-xl p-4"><b class="text-street-gold text-xl">100%</b><p class="text-[10px] text-white/45 mt-1">SERVICE</p></div>
+          </div>
+        </div>
+        <div class="rounded-2xl overflow-hidden border gold-border aspect-[4/3]">
+          <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1400&q=85" class="w-full h-full object-cover" alt="Boutique 2 Street" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <!-- DELIVERY -->
+    <section id="livraison" class="py-20 px-5 bg-[#101010] border-y border-white/5">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+          <p class="text-street-gold text-xs font-bold tracking-[.35em]">SIMPLE & RAPIDE</p>
+          <h2 class="font-display text-4xl mt-2">COMMENT ÇA <span class="gold-text">MARCHE ?</span></h2>
+        </div>
+        <div class="grid md:grid-cols-4 gap-5">
+          <div class="text-center border border-white/10 rounded-xl p-6"><div class="text-street-gold font-display text-3xl">01</div><h3 class="font-bold text-sm mt-3">CHOISISSEZ</h3><p class="text-xs text-white/40 mt-2">Ajoutez vos articles au panier.</p></div>
+          <div class="text-center border border-white/10 rounded-xl p-6"><div class="text-street-gold font-display text-3xl">02</div><h3 class="font-bold text-sm mt-3">COMMANDEZ</h3><p class="text-xs text-white/40 mt-2">Validez vos informations de livraison.</p></div>
+          <div class="text-center border border-white/10 rounded-xl p-6"><div class="text-street-gold font-display text-3xl">03</div><h3 class="font-bold text-sm mt-3">LIVRAISON</h3><p class="text-xs text-white/40 mt-2">Nous vous contactons pour confirmer.</p></div>
+          <div class="text-center border border-white/10 rounded-xl p-6"><div class="text-street-gold font-display text-3xl">04</div><h3 class="font-bold text-sm mt-3">PAYEZ</h3><p class="text-xs text-white/40 mt-2">Paiement à la réception de votre commande.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="contact" class="border-t border-street-gold/20 bg-black">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div>
+        <div class="font-display text-2xl gold-text tracking-[.18em]">2 STREET</div>
+        <p class="text-xs text-white/40 mt-4 leading-6">LUXE. STYLE. PERFORMANCE.<br>Fashion • Watch • Apple</p>
+      </div>
+      <div>
+        <h3 class="text-xs font-bold tracking-[.2em]">SERVICE CLIENT</h3>
+        <p class="text-xs text-white/45 mt-4">Lun – Sam : 8h – 20h</p>
+        <a href="tel:+22891554571" class="text-xs text-street-gold block mt-2">+228 91 55 45 71</a>
+      </div>
+      <div>
+        <h3 class="text-xs font-bold tracking-[.2em]">NOS ENGAGEMENTS</h3>
+        <ul class="text-xs text-white/45 mt-4 space-y-3">
+          <li>✦ Livraison rapide partout au Togo</li>
+          <li>✦ Paiement à la livraison</li>
+          <li>✦ Retour sous 7 jours</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-xs font-bold tracking-[.2em]">SUIVEZ-NOUS</h3>
+        <div class="flex gap-2 mt-4">
+          <a href="#" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-xs hover:border-street-gold hover:text-street-gold">f</a>
+          <a href="#" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-xs hover:border-street-gold hover:text-street-gold">◎</a>
+          <a href="https://wa.me/22891554571" target="_blank" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-xs hover:border-street-gold hover:text-street-gold">◉</a>
+          <a href="#" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-xs hover:border-street-gold hover:text-street-gold">♪</a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-white/5 py-5 text-center text-[10px] text-white/30">© 2026 2 STREET. Tous droits réservés.</div>
+  </footer>
+
+  <!-- CART DRAWER -->
+  <div id="cartBackdrop" class="modal fixed inset-0 z-[70] bg-black/70"></div>
+  <aside id="cartDrawer" class="drawer fixed right-0 top-0 bottom-0 z-[80] w-full max-w-md bg-[#0d0d0d] border-l border-street-gold/20 flex flex-col">
+    <div class="p-5 border-b border-white/10 flex items-center justify-between">
+      <div><p class="text-street-gold text-[10px] tracking-[.25em]">2 STREET</p><h2 class="font-display text-2xl">VOTRE PANIER</h2></div>
+      <button onclick="closeCart()" class="text-2xl text-white/50 hover:text-white">×</button>
+    </div>
+    <div id="cartItems" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
+    <div class="border-t border-white/10 p-5">
+      <div class="flex justify-between text-xs text-white/45"><span>Sous-total</span><span id="cartSubtotal">0 FCFA</span></div>
+      <div class="flex justify-between mt-2 font-bold"><span>Total</span><span id="cartTotal" class="text-street-gold">0 FCFA</span></div>
+      <button onclick="openCheckout()" class="w-full mt-5 bg-street-gold text-black py-4 rounded-md font-extrabold text-xs tracking-widest">PASSER À LA CAISSE</button>
+      <button onclick="orderCartWhatsApp()" class="w-full mt-2 bg-[#25D366] text-black py-4 rounded-md font-extrabold text-xs tracking-widest">COMMANDER SUR WHATSAPP</button>
+    </div>
+  </aside>
+
+  <!-- CHECKOUT MODAL -->
+  <div id="checkoutModal" class="modal fixed inset-0 z-[100] bg-black/80 p-3 sm:p-6 overflow-y-auto">
+    <div class="min-h-full flex items-center justify-center">
+      <div class="w-full max-w-2xl bg-[#111] border border-street-gold/25 rounded-2xl overflow-hidden shadow-goldStrong">
+        <div class="p-5 sm:p-7 border-b border-white/10 flex justify-between">
+          <div><p class="text-street-gold text-[10px] tracking-[.25em]">3 ÉTAPES • 2 STREET</p><h2 class="font-display text-3xl mt-1">PAIEMENT</h2></div>
+          <button onclick="closeCheckout()" class="text-2xl text-white/40">×</button>
+        </div>
+        <form id="checkoutForm" class="p-5 sm:p-7">
+          <div class="grid grid-cols-3 text-center text-[9px] tracking-widest mb-7">
+            <div class="text-street-gold">1. INFORMATIONS</div><div class="text-white/35">2. LIVRAISON</div><div class="text-white/35">3. PAIEMENT</div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="sm:col-span-2"><label class="label">NOM COMPLET *</label><input id="customerName" required class="field" placeholder="Votre nom et prénom"></div>
+            <div><label class="label">TÉLÉPHONE *</label><input id="customerPhone" required type="tel" class="field" placeholder="+228 90 00 00 00"></div>
+            <div><label class="label">VILLE *</label><input id="customerCity" required class="field" value="Lomé"></div>
+            <div class="sm:col-span-2"><label class="label">ADRESSE *</label><textarea id="customerAddress" required rows="3" class="field resize-none" placeholder="Quartier, rue, repère..."></textarea></div>
+          </div>
+          <div class="mt-6 p-4 rounded-xl border border-white/10 bg-black/30">
+            <div class="flex justify-between text-xs"><span class="text-white/45">Total de la commande</span><strong id="checkoutTotal" class="text-street-gold">0 FCFA</strong></div>
+            <p class="text-[10px] text-white/35 mt-2">Méthode : paiement à la livraison.</p>
+          </div>
+          <button class="w-full mt-6 bg-street-gold text-black py-4 rounded-md font-extrabold text-xs tracking-widest">CONFIRMER LA COMMANDE</button>
+          <button type="button" onclick="orderCartWhatsApp()" class="w-full mt-2 bg-[#25D366] text-black py-4 rounded-md font-extrabold text-xs tracking-widest">COMMANDER DIRECTEMENT SUR WHATSAPP</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEARCH MODAL -->
+  <div id="searchModal" class="modal fixed inset-0 z-[100] bg-black/80 p-5">
+    <div class="max-w-2xl mx-auto mt-24 bg-[#111] border border-street-gold/20 rounded-2xl p-5">
+      <div class="flex justify-between items-center mb-5"><h2 class="font-display text-2xl">RECHERCHER</h2><button onclick="closeSearch()" class="text-2xl text-white/40">×</button></div>
+      <input id="searchInput" oninput="searchProducts()" class="field text-lg" placeholder="Hoodie, iPhone, montre..." autofocus>
+      <div id="searchResults" class="mt-4 max-h-[55vh] overflow-auto space-y-2"></div>
+    </div>
+  </div>
+
+  <!-- ACCOUNT MODAL -->
+  <div id="accountModal" class="modal fixed inset-0 z-[100] bg-black/80 p-5">
+    <div class="max-w-md mx-auto mt-24 bg-[#111] border border-street-gold/20 rounded-2xl p-7">
+      <div class="flex justify-between"><div><p class="text-street-gold text-[10px] tracking-[.25em]">ESPACE CLIENT</p><h2 class="font-display text-3xl mt-1">MON COMPTE</h2></div><button onclick="closeAccount()" class="text-2xl text-white/40">×</button></div>
+      <p class="text-white/50 text-sm leading-6 mt-6">Pour le moment, 2 STREET fonctionne sans création de compte. Votre panier est sauvegardé automatiquement sur cet appareil.</p>
+      <button onclick="closeAccount();openCart()" class="w-full mt-6 bg-street-gold text-black py-4 rounded-md font-extrabold text-xs tracking-widest">VOIR MON PANIER</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast fixed bottom-5 left-1/2 -translate-x-1/2 z-[150] bg-street-gold text-black font-bold text-xs px-5 py-3 rounded-full shadow-gold whitespace-nowrap"></div>
+
+  <style>
+    .label { display:block;font-size:9px;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:7px; }
+    .field { width:100%;background:#080808;border:1px solid rgba(255,255,255,.11);border-radius:8px;padding:13px;color:white;font-size:12px; }
+    .size-filter { border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:7px 0;font-size:10px;color:rgba(255,255,255,.6); }
+    .size-filter.active,.size-filter:hover { border-color:#D4AF37;color:#D4AF37; }
+    .color-filter.active { box-shadow:0 0 0 2px #D4AF37; }
+  </style>
+
+<script>
+const WHATSAPP = '22891554571';
+
+const products = [
+  // FASHION
+  {id:'f1', branch:'fashion', category:'Hoodies', name:'Hoodie 2 STREET', price:35000, color:'Noir', sizes:['S','M','L','XL','XXL'], img:'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=900&q=85'},
+  {id:'f2', branch:'fashion', category:'T-shirts', name:'T-Shirt 2 STREET', price:15000, color:'Noir', sizes:['S','M','L','XL','XXL'], img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=85'},
+  {id:'f3', branch:'fashion', category:'Pantalons', name:'Pantalon Cargo 2 STREET', price:25000, color:'Noir', sizes:['S','M','L','XL','XXL'], img:'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=85'},
+  {id:'f4', branch:'fashion', category:'Vestes', name:'Veste Streetwear', price:45000, color:'Noir', sizes:['S','M','L','XL','XXL'], img:'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=900&q=85'},
+  {id:'f5', branch:'fashion', category:'T-shirts', name:'T-Shirt Oversize', price:17000, color:'Blanc', sizes:['S','M','L','XL','XXL'], img:'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=900&q=85'},
+  {id:'f6', branch:'fashion', category:'Hoodies', name:'Hoodie Oversize', price:37000, color:'Beige', sizes:['S','M','L','XL','XXL'], img:'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=900&q=85'},
+  {id:'f7', branch:'fashion', category:'Pantalons', name:'Short 2 STREET', price:18000, color:'Noir', sizes:['S','M','L','XL','XXL'], img:'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=900&q=85'},
+  {id:'f8', branch:'fashion', category:'Accessoires', name:'Casquette 2 STREET', price:10000, color:'Noir', sizes:[], img:'https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=900&q=85'},
+  // WATCH
+  {id:'w1', branch:'watch', category:'Montres', name:'Montre Rolex Datejust', price:25000, color:'Doré', sizes:[], img:'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=900&q=85'},
+  {id:'w2', branch:'watch', category:'Montres', name:'Montre Hublot Classic', price:45000, color:'Noir', sizes:[], img:'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=900&q=85'},
+  {id:'w3', branch:'watch', category:'Montres', name:'Montre Casio G-Shock', price:85000, color:'Noir', sizes:[], img:'https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?auto=format&fit=crop&w=900&q=85'},
+  {id:'w4', branch:'watch', category:'Montres', name:'Montre Fossil Grant', price:65000, color:'Doré', sizes:[], img:'https://images.unsplash.com/photo-1508057198894-247b23fe5ade?auto=format&fit=crop&w=900&q=85'},
+  // APPLE
+  {id:'a1', branch:'apple', category:'Apple', name:'iPhone 15 Pro Max', price:1350000, color:'Noir', sizes:[], img:'https://images.unsplash.com/photo-1592286927505-2fd0c2c7c2a5?auto=format&fit=crop&w=900&q=85'},
+  {id:'a2', branch:'apple', category:'Apple', name:'iPhone 14 Pro', price:950000, color:'Violet', sizes:[], img:'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?auto=format&fit=crop&w=900&q=85'},
+  {id:'a3', branch:'apple', category:'Apple', name:'iPhone 13', price:650000, color:'Bleu', sizes:[], img:'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?auto=format&fit=crop&w=900&q=85'},
+  {id:'a4', branch:'apple', category:'Apple', name:'AirPods Pro 2', price:129000, color:'Blanc', sizes:[], img:'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?auto=format&fit=crop&w=900&q=85'}
+];
+
+let cart = JSON.parse(localStorage.getItem('2street_cart') || '[]');
+let currentBranch = 'fashion';
+let selectedSize = '';
+let selectedColor = '';
+
+const branchInfo = {
+  fashion: {title:'2 STREET FASHION', kicker:'01 — FASHION', desc:'Vêtements et accessoires premium pour un style streetwear affirmé.'},
+  watch: {title:'2 STREET WATCH', kicker:'02 — WATCH', desc:'Montres sélectionnées et service de réparation horlogère.'},
+  apple: {title:'2 STREET APPLE', kicker:'03 — APPLE', desc:'iPhone neufs et occasions + accessoires Apple.'}
+};
+
+function money(n){ return Number(n).toLocaleString('fr-FR') + ' FCFA'; }
+
+function saveCart(){
+  localStorage.setItem('2street_cart', JSON.stringify(cart));
+  updateCartCount();
+}
+
+function updateCartCount(){
+  document.getElementById('cartCount').textContent = cart.reduce((sum,i)=>sum+i.qty,0);
+}
+
+function showToast(text){
+  const t=document.getElementById('toast'); t.textContent=text; t.classList.add('show');
+  clearTimeout(window.toastTimer); window.toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+function goHome(){
+  document.getElementById('shop').classList.add('hidden');
+  document.getElementById('accueil').scrollIntoView({behavior:'smooth'});
+}
+
+function showShop(branch){
+  currentBranch=branch;
+  const info=branchInfo[branch];
+  document.getElementById('shop').classList.remove('hidden');
+  document.getElementById('shopKicker').textContent=info.kicker;
+  document.getElementById('shopTitle').textContent=info.title;
+  document.getElementById('shopDescription').textContent=info.desc;
+  document.getElementById('categoryFilter').value='all';
+  document.getElementById('priceFilter').value=1500000;
+  document.getElementById('priceValue').textContent=money(1500000);
+  document.getElementById('sortFilter').value='featured';
+  selectedSize=''; selectedColor='';
+  document.querySelectorAll('.size-filter,.color-filter').forEach(x=>x.classList.remove('active'));
+  document.getElementById('sizeFilterWrap').style.display = branch==='fashion' ? 'block' : 'none';
+  document.getElementById('repairSection').classList.toggle('hidden', branch!=='watch');
+  applyFilters();
+  document.getElementById('shop').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function applyFilters(){
+  const cat=document.getElementById('categoryFilter').value;
+  const max=Number(document.getElementById('priceFilter').value);
+  const sort=document.getElementById('sortFilter').value;
+  let list=products.filter(p=>p.branch===currentBranch && (cat==='all'||p.category===cat) && p.price<=max);
+  if(selectedSize) list=list.filter(p=>p.sizes.includes(selectedSize));
+  if(selectedColor) list=list.filter(p=>p.color===selectedColor);
+
+  if(sort==='priceAsc') list.sort((a,b)=>a.price-b.price);
+  if(sort==='priceDesc') list.sort((a,b)=>b.price-a.price);
+  if(sort==='name') list.sort((a,b)=>a.name.localeCompare(b.name));
+
+  document.getElementById('productResultCount').textContent=list.length;
+  document.getElementById('noResults').style.display=list.length?'none':'block';
+  document.getElementById('productGrid').innerHTML=list.map(productCard).join('');
+}
+
+function productCard(p){
+  const encoded=encodeURIComponent(`Bonjour 2 STREET, je veux commander ${p.name} à ${money(p.price)}`);
+  return `
+    <article class="product-card bg-[#111] border border-white/10 rounded-xl overflow-hidden">
+      <button onclick="addToCart('${p.id}')" class="w-full text-left">
+        <div class="relative aspect-square bg-[#e9e5dd] overflow-hidden">
+          <img src="${p.img}" alt="${p.name}" class="card-img w-full h-full object-cover" loading="lazy">
+          <span class="absolute top-2 left-2 bg-black/80 text-[8px] px-2 py-1 rounded text-white/70">${p.category}</span>
+          <span class="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/75 text-street-gold flex items-center justify-center">+</span>
+        </div>
+      </button>
+      <div class="p-3 sm:p-4">
+        <h3 class="text-[11px] sm:text-xs font-semibold leading-5 min-h-10">${p.name}</h3>
+        <div class="flex items-center justify-between gap-2 mt-2">
+          <strong class="text-street-gold text-xs sm:text-sm">${money(p.price)}</strong>
+          <button onclick="addToCart('${p.id}')" title="Ajouter au panier" class="text-white/60 hover:text-street-gold">🛒</button>
+        </div>
+        <a href="https://wa.me/${WHATSAPP}?text=${encoded}" target="_blank" class="mt-3 block text-center bg-[#25D366] text-black rounded-md py-2.5 text-[9px] sm:text-[10px] font-extrabold tracking-wider">
+          COMMANDER SUR WHATSAPP
+        </a>
+      </div>
+    </article>`;
+}
+
+document.querySelectorAll('.size-filter').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    selectedSize = selectedSize===btn.dataset.size ? '' : btn.dataset.size;
+    document.querySelectorAll('.size-filter').forEach(x=>x.classList.toggle('active',x.dataset.size===selectedSize));
+    applyFilters();
+  });
+});
+document.querySelectorAll('.color-filter').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    selectedColor = selectedColor===btn.dataset.color ? '' : btn.dataset.color;
+    document.querySelectorAll('.color-filter').forEach(x=>x.classList.toggle('active',x.dataset.color===selectedColor));
+    applyFilters();
+  });
+});
+
+function resetFilters(){
+  document.getElementById('categoryFilter').value='all';
+  document.getElementById('priceFilter').value=1500000;
+  document.getElementById('priceValue').textContent=money(1500000);
+  selectedSize=''; selectedColor='';
+  document.querySelectorAll('.size-filter,.color-filter').forEach(x=>x.classList.remove('active'));
+  applyFilters();
+}
+
+function addToCart(id){
+  const p=products.find(x=>x.id===id);
+  const existing=cart.find(x=>x.id===id);
+  if(existing) existing.qty++;
+  else cart.push({id:p.id,qty:1});
+  saveCart(); renderCart(); showToast(`${p.name} ajouté au panier`);
+}
+
+function removeFromCart(id){
+  cart=cart.filter(x=>x.id!==id); saveCart(); renderCart();
+}
+function changeQty(id,delta){
+  const item=cart.find(x=>x.id===id); if(!item)return;
+  item.qty+=delta; if(item.qty<=0) removeFromCart(id); else {saveCart();renderCart();}
+}
+function cartTotal(){ return cart.reduce((sum,i)=>{const p=products.find(x=>x.id===i.id);return sum+p.price*i.qty},0); }
+
+function renderCart(){
+  const box=document.getElementById('cartItems');
+  if(!cart.length){
+    box.innerHTML='<div class="h-full flex flex-col items-center justify-center text-center"><div class="text-4xl mb-4">🛒</div><p class="font-display text-2xl">Votre panier est vide</p><p class="text-xs text-white/35 mt-2">Découvrez nos collections et ajoutez vos coups de cœur.</p></div>';
+  } else {
+    box.innerHTML=cart.map(item=>{
+      const p=products.find(x=>x.id===item.id);
+      return `<div class="flex gap-3 p-3 border border-white/10 rounded-xl">
+        <img src="${p.img}" class="w-20 h-20 object-cover rounded-lg bg-white" alt="${p.name}">
+        <div class="flex-1 min-w-0">
+          <div class="flex justify-between gap-2"><p class="text-xs font-semibold truncate">${p.name}</p><button onclick="removeFromCart('${p.id}')" class="text-white/30 hover:text-red-400">×</button></div>
+          <p class="text-street-gold text-xs mt-1">${money(p.price)}</p>
+          <div class="flex items-center gap-3 mt-3"><button onclick="changeQty('${p.id}',-1)" class="w-6 h-6 border border-white/15 rounded">−</button><span class="text-xs">${item.qty}</span><button onclick="changeQty('${p.id}',1)" class="w-6 h-6 border border-white/15 rounded">+</button></div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('cartSubtotal').textContent=money(cartTotal());
+  document.getElementById('cartTotal').textContent=money(cartTotal());
+  document.getElementById('checkoutTotal').textContent=money(cartTotal());
+}
+function openCart(){ document.getElementById('cartBackdrop').classList.add('open');document.getElementById('cartDrawer').classList.add('open');renderCart(); }
+function closeCart(){ document.getElementById('cartBackdrop').classList.remove('open');document.getElementById('cartDrawer').classList.remove('open'); }
+document.getElementById('cartBackdrop').onclick=closeCart;
+
+function openCheckout(){
+  if(!cart.length){showToast('Votre panier est vide');return;}
+  closeCart(); document.getElementById('checkoutModal').classList.add('open'); document.getElementById('checkoutTotal').textContent=money(cartTotal());
+}
+function closeCheckout(){document.getElementById('checkoutModal').classList.remove('open');}
+document.getElementById('checkoutForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const name=document.getElementById('customerName').value.trim();
+  const phone=document.getElementById('customerPhone').value.trim();
+  const city=document.getElementById('customerCity').value.trim();
+  const address=document.getElementById('customerAddress').value.trim();
+  const lines=cart.map(i=>{const p=products.find(x=>x.id===i.id);return `• ${p.name} x${i.qty} — ${money(p.price*i.qty)}`}).join('\n');
+  const text=`Bonjour 2 STREET,\n\nJe confirme ma commande :\n${lines}\n\nTotal : ${money(cartTotal())}\n\nNom : ${name}\nTéléphone : ${phone}\nVille : ${city}\nAdresse : ${address}\n\nPaiement à la livraison.`;
+  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`,'_blank');
+  showToast('Commande préparée sur WhatsApp');
+});
+
+function orderCartWhatsApp(){
+  if(!cart.length){showToast('Votre panier est vide');return;}
+  const lines=cart.map(i=>{const p=products.find(x=>x.id===i.id);return `• ${p.name} x${i.qty} — ${money(p.price*i.qty)}`}).join('\n');
+  const text=`Bonjour 2 STREET, je veux commander :\n${lines}\n\nTotal : ${money(cartTotal())}`;
+  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`,'_blank');
+}
+function openWhatsApp(text){window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`,'_blank');}
+
+function openSearch(){document.getElementById('searchModal').classList.add('open');setTimeout(()=>document.getElementById('searchInput').focus(),100);searchProducts();}
+function closeSearch(){document.getElementById('searchModal').classList.remove('open');}
+function searchProducts(){
+  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  const list=products.filter(p=>!q||(`${p.name} ${p.category} ${p.branch}`).toLowerCase().includes(q)).slice(0,10);
+  document.getElementById('searchResults').innerHTML=list.map(p=>`
+    <button onclick="closeSearch();showShop('${p.branch}')" class="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 text-left">
+      <img src="${p.img}" class="w-12 h-12 object-cover rounded bg-white" alt="">
+      <div class="flex-1"><p class="text-xs font-semibold">${p.name}</p><p class="text-[10px] text-street-gold mt-1">${money(p.price)}</p></div><span class="text-white/30">→</span>
+    </button>`).join('');
+}
+
+function openAccount(){document.getElementById('accountModal').classList.add('open')}
+function closeAccount(){document.getElementById('accountModal').classList.remove('open')}
+function toggleMobileMenu(){document.getElementById('mobileMenu').classList.toggle('hidden')}
+
+updateCartCount();
+renderCart();
+
+// Close modals with backdrop / Escape
+['searchModal','accountModal','checkoutModal'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',e=>{if(e.target.id===id){document.getElementById(id).classList.remove('open')}});
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeCart();closeSearch();closeAccount();closeCheckout();}
+});
+</script>
+</body>
+</html>
