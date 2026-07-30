@@ -92,3 +92,30 @@ collections:
         name: "branch"
         widget: "hidden"
         default: "fashion"
+  - name: "watches"
+    label: "2 STREET WATCHES"
+    label_singular: "Montre"
+    folder: "content/products/watches"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Nom de la montre", name: "title", widget: "string" }
+      - { label: "Prix (FCFA)", name: "price", widget: "number", value_type: "int", min: 0 }
+      - { label: "Photo de la montre", name: "image", widget: "image" }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Stock disponible", name: "stock", widget: "number", value_type: "int", min: 0, default: 0 }
+      - { label: "Boutique", name: "branch", widget: "hidden", default: "watches" }
+
+  - name: "phones"
+    label: "2 STREET PHONES"
+    label_singular: "Téléphone"
+    folder: "content/products/phones"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Nom du téléphone", name: "title", widget: "string" }
+      - { label: "Prix (FCFA)", name: "price", widget: "number", value_type: "int", min: 0 }
+      - { label: "Photo du téléphone", name: "image", widget: "image" }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Stock disponible", name: "stock", widget: "number", value_type: "int", min: 0, default: 0 }
+      - { label: "Boutique", name: "branch", widget: "hidden", default: "phones" }
